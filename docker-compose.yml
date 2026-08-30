@@ -1,0 +1,19 @@
+services:
+  # nginx - takes the incoming requests and triggers PHP interpreter
+  server:
+    image: "nginx:stable-alpine"
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  # PHP interpreter - running and executing PHP code
+  # php:
+
+  # mysql:
+
+  # composer:
+
+  # artisan:
+
+  # npm:
