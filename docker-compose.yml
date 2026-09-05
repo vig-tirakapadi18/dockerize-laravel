@@ -1,11 +1,15 @@
 services:
   # nginx - takes the incoming requests and triggers PHP interpreter
   server:
-    image: "nginx:stable-alpine"
+    image: nginx:stable-alpine
     ports:
       - "8000:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./src:/var/www/html
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+      - mysql
 
   # PHP interpreter - running and executing PHP code
   php:
@@ -30,6 +34,12 @@ services:
     volumes:
       - ./src:/var/www/html
 
-  # artisan:
-
-  # npm:
+  artisan:
+    build:
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    entrypoint: ["php", "/var/www/html/artisan"]
+  npm:
+    image: node:22-alpine
